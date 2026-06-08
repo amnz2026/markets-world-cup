@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en-NZ">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Markets World Cup — Ramsgate Advisors</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b1410;
+    --bg2:#0e1a14;
+    --surface:#13241c;
+    --surface2:#18301f;
+    --line:rgba(244,239,227,.10);
+    --line-strong:rgba(244,239,227,.22);
+    --ink:#f4efe3;
+    --ink-soft:#c8cbbf;
+    --ink-faint:#8b948a;
+    --gold:#e3bd6a;
+    --gold-deep:#caa14d;
+    --clay:#cf6a4a;
+    --pitch:#2a5e3f;
+    --pitch-bright:#3f8a5c;
+    --shadow:0 24px 60px -20px rgba(0,0,0,.7);
+    --r:18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:'Hanken Grotesk',system-ui,sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.5;
+    min-height:100vh;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:
+      radial-gradient(1200px 600px at 80% -10%, rgba(63,138,92,.18), transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, rgba(227,189,106,.10), transparent 55%);
+  }
+  /* faint film grain */
+  body::after{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.035;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .wrap{position:relative;z-index:1;max-width:1040px;margin:0 auto;padding:22px 20px 64px}
+
+  /* ---------- top bar ---------- */
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:30px}
+  .brand{display:flex;align-items:center;gap:11px;letter-spacing:.02em}
+  .brand .mark{
+    width:34px;height:34px;border-radius:9px;flex:none;
+    background:linear-gradient(150deg,var(--gold),var(--gold-deep));
+    display:grid;place-items:center;color:#1a1206;font-family:'Fraunces',serif;font-weight:800;font-size:19px;
+    box-shadow:0 6px 18px -6px rgba(227,189,106,.55);
+  }
+  .brand b{font-weight:600;font-size:14.5px}
+  .brand a{color:inherit;text-decoration:none;border-bottom:1px solid transparent;transition:.2s}
+  .brand a:hover{color:var(--gold);border-bottom-color:var(--gold)}
+  .brand span{display:block;font-size:11px;color:var(--ink-faint);letter-spacing:.14em;text-transform:uppercase}
+  .backbtn{
+    border:1px solid var(--line-strong);background:transparent;color:var(--ink-soft);
+    padding:9px 15px;border-radius:999px;font:inherit;font-size:13px;cursor:pointer;display:none;align-items:center;gap:7px;
+    transition:.2s;
+  }
+  .backbtn:hover{border-color:var(--gold);color:var(--gold)}
+  .backbtn.show{display:inline-flex}
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;text-align:center;padding:34px 16px 8px;margin-bottom:34px}
+  .pitch{
+    position:absolute;inset:-10px 0 -20px;z-index:-1;opacity:.5;
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    -webkit-mask-image:linear-gradient(#000,transparent 88%);mask-image:linear-gradient(#000,transparent 88%);
+  }
+  .pitch::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--line)}
+  .pitch::after{content:"";position:absolute;left:50%;top:50%;width:150px;height:150px;transform:translate(-50%,-50%);border:1px solid var(--line);border-radius:50%}
+  .kicker{font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+  h1{
+    font-family:'Fraunces',serif;font-weight:600;font-size:clamp(40px,9vw,76px);line-height:.96;letter-spacing:-.015em;
+    margin-bottom:18px;
+  }
+  h1 em{font-style:italic;color:var(--gold)}
+  .lede{max-width:560px;margin:0 auto;color:var(--ink-soft);font-size:clamp(15px,2.4vw,17.5px)}
+  .countdown{margin-top:20px;display:inline-flex;align-items:center;gap:9px;font-size:13px;color:var(--ink-faint);border:1px solid var(--line);padding:8px 16px;border-radius:999px}
+  .countdown b{color:var(--ink);font-weight:600}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--pitch-bright);box-shadow:0 0 0 0 rgba(63,138,92,.6);animation:pulse 2.2s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(63,138,92,.5)}70%{box-shadow:0 0 0 9px rgba(63,138,92,0)}100%{box-shadow:0 0 0 0 rgba(63,138,92,0)}}
+
+  /* ---------- game cards ---------- */
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  @media(max-width:640px){.grid{grid-template-columns:1fr}}
+  .card{
+    position:relative;background:linear-gradient(160deg,var(--surface),var(--bg2));
+    border:1px solid var(--line);border-radius:var(--r);padding:24px 22px 22px;cursor:pointer;
+    transition:transform .25s cubic-bezier(.2,.8,.2,1),border-color .25s,box-shadow .25s;overflow:hidden;
+    opacity:0;transform:translateY(14px);animation:rise .6s forwards;
+  }
+  .card:nth-child(1){animation-delay:.05s}.card:nth-child(2){animation-delay:.13s}
+  .card:nth-child(3){animation-delay:.21s}.card:nth-child(4){animation-delay:.29s}
+  @keyframes rise{to{opacity:1;transform:translateY(0)}}
+  .card:hover{transform:translateY(-4px);border-color:var(--line-strong);box-shadow:var(--shadow)}
+  .card::after{content:"";position:absolute;right:-40px;top:-40px;width:130px;height:130px;border-radius:50%;
+    background:radial-gradient(circle,rgba(227,189,106,.16),transparent 70%);opacity:0;transition:.3s}
+  .card:hover::after{opacity:1}
+  .card .num{font-family:'Fraunces',serif;font-size:13px;color:var(--gold);letter-spacing:.05em}
+  .card h3{font-family:'Fraunces',serif;font-weight:600;font-size:24px;margin:10px 0 8px;letter-spacing:-.01em}
+  .card p{color:var(--ink-soft);font-size:14px;max-width:36ch}
+  .card .go{margin-top:16px;font-size:13px;color:var(--gold);display:inline-flex;align-items:center;gap:6px;font-weight:600}
+  .card .emoji{font-size:24px;position:absolute;top:22px;right:22px;filter:saturate(1.1)}
+
+  /* ---------- generic module ---------- */
+  .panel{background:linear-gradient(160deg,var(--surface),var(--bg2));border:1px solid var(--line);border-radius:var(--r);padding:30px 26px;box-shadow:var(--shadow)}
+  .mod-head{margin-bottom:22px}
+  .mod-head .tag{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold)}
+  .mod-head h2{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(26px,5vw,38px);line-height:1.02;margin:10px 0 6px;letter-spacing:-.01em}
+  .mod-head .sub{color:var(--ink-soft);font-size:15px;max-width:60ch}
+  .progress{height:4px;background:var(--line);border-radius:99px;margin:18px 0 26px;overflow:hidden}
+  .progress > i{display:block;height:100%;background:linear-gradient(90deg,var(--gold-deep),var(--gold));border-radius:99px;transition:width .4s}
+
+  .qtext{font-family:'Fraunces',serif;font-size:clamp(20px,4vw,27px);font-weight:500;line-height:1.2;margin-bottom:20px}
+  .opts{display:grid;gap:11px}
+  .opt{
+    text-align:left;border:1px solid var(--line-strong);background:rgba(255,255,255,.015);color:var(--ink);
+    padding:15px 17px;border-radius:13px;font:inherit;font-size:15px;cursor:pointer;transition:.18s;display:flex;gap:12px;align-items:center;
+  }
+  .opt:hover{border-color:var(--gold);background:rgba(227,189,106,.07);transform:translateX(3px)}
+  .opt .k{width:25px;height:25px;border-radius:7px;flex:none;display:grid;place-items:center;font-size:12.5px;font-weight:700;background:var(--surface2);color:var(--gold)}
+  .opt.correct{border-color:var(--pitch-bright);background:rgba(63,138,92,.16)}
+  .opt.wrong{border-color:var(--clay);background:rgba(207,106,74,.14)}
+  .opt:disabled{cursor:default;opacity:.65}
+  .opt.correct:hover,.opt.wrong:hover{transform:none}
+
+  .btn{
+    border:none;background:linear-gradient(150deg,var(--gold),var(--gold-deep));color:#1a1206;
+    padding:13px 24px;border-radius:999px;font:inherit;font-weight:700;font-size:15px;cursor:pointer;transition:.2s;
+  }
+  .btn:hover{filter:brightness(1.06);transform:translateY(-1px)}
+  .btn.ghost{background:transparent;border:1px solid var(--line-strong);color:var(--ink-soft);font-weight:600}
+  .btn.ghost:hover{border-color:var(--gold);color:var(--gold);transform:none}
+  .row{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+
+  /* ---------- result card ---------- */
+  .result{text-align:center;padding:8px 4px}
+  .result .flag{font-size:64px;line-height:1;margin-bottom:8px}
+  .result .team{font-family:'Fraunces',serif;font-size:clamp(28px,6vw,42px);font-weight:600}
+  .result .arche{color:var(--gold);font-size:14px;letter-spacing:.2em;text-transform:uppercase;margin:6px 0 18px}
+  .result .blurb{max-width:54ch;margin:0 auto 18px;color:var(--ink-soft);font-size:15.5px}
+  .traits{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:560px;margin:18px auto 0;text-align:left}
+  @media(max-width:560px){.traits{grid-template-columns:1fr}}
+  .trait{border:1px solid var(--line);border-radius:12px;padding:14px 15px;background:rgba(255,255,255,.012)}
+  .trait b{display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:5px}
+  .trait span{font-size:14px;color:var(--ink)}
+
+  /* ---------- bracket ---------- */
+  .bracket{display:flex;gap:14px;overflow-x:auto;padding-bottom:10px;-webkit-overflow-scrolling:touch}
+  .round{display:flex;flex-direction:column;justify-content:space-around;gap:10px;min-width:150px;flex:none}
+  .round h4{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);text-align:center;margin-bottom:2px}
+  .slot{
+    border:1px solid var(--line-strong);background:rgba(255,255,255,.015);border-radius:11px;padding:9px 11px;
+    font-size:13.5px;cursor:pointer;transition:.15s;display:flex;align-items:center;gap:8px;min-height:40px;
+  }
+  .slot:hover:not(.locked):not(.empty){border-color:var(--gold);background:rgba(227,189,106,.08)}
+  .slot.picked{border-color:var(--gold);background:rgba(227,189,106,.13);font-weight:600}
+  .slot.empty{opacity:.4;cursor:default;font-style:italic;color:var(--ink-faint)}
+  .slot.champ{border-color:var(--gold);background:linear-gradient(150deg,rgba(227,189,106,.22),rgba(227,189,106,.06));font-weight:700}
+  .slot .fl{font-size:16px;flex:none}
+
+  /* ---------- market cup ---------- */
+  .matchcard{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:stretch;margin-bottom:10px}
+  @media(max-width:560px){.matchcard{grid-template-columns:1fr;gap:10px}}
+  .mkt{
+    border:1px solid var(--line-strong);background:rgba(255,255,255,.015);border-radius:14px;padding:18px;cursor:pointer;transition:.18s;text-align:left;
+  }
+  .mkt:hover{border-color:var(--gold);background:rgba(227,189,106,.07);transform:translateY(-2px)}
+  .mkt .fl{font-size:30px}
+  .mkt .name{font-family:'Fraunces',serif;font-size:20px;font-weight:600;margin:6px 0 2px}
+  .mkt .stat{font-size:12.5px;color:var(--ink-faint);margin-top:8px}
+  .mkt .stat b{color:var(--gold);font-weight:700}
+  .mkt .char{font-size:13px;color:var(--ink-soft);margin-top:4px}
+  .vs{align-self:center;font-family:'Fraunces',serif;font-style:italic;color:var(--ink-faint);font-size:15px;text-align:center}
+  .note{margin-top:14px;border-left:2px solid var(--gold);padding:10px 14px;background:rgba(227,189,106,.05);border-radius:0 10px 10px 0;font-size:14px;color:var(--ink-soft)}
+
+  .scoreline{font-family:'Fraunces',serif;font-size:clamp(34px,8vw,58px);font-weight:600;text-align:center;margin:6px 0}
+  .scoreline b{color:var(--gold)}
+  .verdict{text-align:center;color:var(--ink-soft);max-width:50ch;margin:0 auto 6px;font-size:15.5px}
+
+  .disclaimer{margin-top:34px;border-top:1px solid var(--line);padding-top:18px;color:var(--ink-faint);font-size:11.5px;line-height:1.6}
+  .disclaimer b{color:var(--ink-soft)}
+  .footer{margin-top:26px;text-align:center;color:var(--ink-faint);font-size:12px}
+  .footer a{color:var(--gold);text-decoration:none}
+
+  .toast{position:fixed;left:50%;bottom:26px;translate:-50% 10px;background:var(--surface2);border:1px solid var(--gold);color:var(--ink);padding:12px 20px;border-radius:999px;font-size:13.5px;opacity:0;transition:.3s;z-index:50;pointer-events:none}
+  .toast.show{opacity:1;translate:-50% 0}
+  .hint{font-size:12.5px;color:var(--ink-faint);text-align:center;margin-top:20px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <div class="brand">
+      <div class="mark">A</div>
+      <div><b>Built by <a href="https://www.linkedin.com/in/andy-mahony-cfa-b6459050/" target="_blank" rel="noopener">Andy Mahony, CFA</a></b><span>The Markets World Cup</span></div>
+    </div>
+    <button class="backbtn" id="backbtn">← All games</button>
+  </div>
+  <div id="app"></div>
+
+  <div class="footer">
+    Built by <b style="color:var(--ink-soft)">Andy Mahony, CFA</b> · <a href="https://www.linkedin.com/in/andy-mahony-cfa-b6459050/" target="_blank" rel="noopener">Connect on LinkedIn</a>
+  </div>
+  <div class="disclaimer">
+    <b>A bit of fun, not financial advice.</b> This page is an engagement piece and nothing in it is a recommendation, an offer, or financial advice. Any market figures shown are indicative and for illustration only — they are not live, not exact, and should not be relied upon. Tournament fields and seedings are illustrative and unofficial. This page is not affiliated with, endorsed by, or connected to FIFA or any football governing body.
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   CONFIG — set this to your hosted URL before sharing so the
+   "copy result" buttons include your link.
+   ========================================================= */
+const SHARE_URL = "https://amnz2026.github.io/markets-world-cup/"; // your GitHub Pages URL
+
+const app = document.getElementById('app');
+const backbtn = document.getElementById('backbtn');
+const toastEl = document.getElementById('toast');
+backbtn.addEventListener('click', renderHome);
+
+function toast(msg){
+  toastEl.textContent = msg; toastEl.classList.add('show');
+  clearTimeout(window._tt); window._tt = setTimeout(()=>toastEl.classList.remove('show'),2200);
+}
+function copyResult(text){
+  const full = text + (SHARE_URL ? ("\n\nPlay all four: " + SHARE_URL) : "");
+  navigator.clipboard.writeText(full).then(()=>toast("Copied — paste it into your LinkedIn post"),
+    ()=>toast("Copy failed — select and copy manually"));
+}
+function setBack(show){ backbtn.classList.toggle('show', !!show); }
+function scrollTop(){ window.scrollTo({top:0,behavior:'smooth'}); }
+
+/* ============================ HOME ============================ */
+function renderHome(){
+  setBack(false);
+  if(location.hash){ history.replaceState(null,'',location.pathname+location.search); }
+  const days = Math.max(0, Math.ceil((new Date('2026-06-11T00:00:00') - new Date())/86400000));
+  const cd = days>0 ? `<b>${days} day${days===1?'':'s'}</b> until kick-off` : `<b>The tournament is under way</b>`;
+  app.innerHTML = `
+    <div class="hero">
+      <div class="pitch"></div>
+      <div class="kicker">Auckland · Sydney · London</div>
+      <h1>Where football<br>meets <em>portfolios</em></h1>
+      <p class="lede">Four quick games for people who think about markets for a living — built to spark a conversation across your network during the world's biggest tournament.</p>
+      <div class="countdown"><span class="dot"></span> ${cd}</div>
+    </div>
+    <div class="grid">
+      <div class="card" data-go="temperament">
+        <span class="emoji">🧭</span>
+        <div class="num">01</div>
+        <h3>Which nation is<br>your portfolio?</h3>
+        <p>Five questions on temperament. Get matched to a footballing style — and the investing one that mirrors it.</p>
+        <span class="go">Find your style →</span>
+      </div>
+      <div class="card" data-go="conviction">
+        <span class="emoji">🏆</span>
+        <div class="num">02</div>
+        <h3>The Conviction<br>Bracket</h3>
+        <p>Call the knockouts from a 16-team field. Then read what your picks say about how you size conviction.</p>
+        <span class="go">Make your calls →</span>
+      </div>
+      <div class="card" data-go="marketcup">
+        <span class="emoji">📈</span>
+        <div class="num">03</div>
+        <h3>The Stock Market<br>World Cup</h3>
+        <p>Eight national equity markets, one knockout. Back the one you'd own — and see what it reveals about home bias.</p>
+        <span class="go">Pick your champion →</span>
+      </div>
+      <div class="card" data-go="trivia">
+        <span class="emoji">⚽</span>
+        <div class="num">04</div>
+        <h3>Markets ×<br>World Cup trivia</h3>
+        <p>Eight questions where the pitch meets the portfolio. Score it, then dare your network to beat you.</p>
+        <span class="go">Test yourself →</span>
+      </div>
+    </div>
+  `;
+  app.querySelectorAll('.card').forEach(c=>c.addEventListener('click',()=>{ location.hash = c.dataset.go; }));
+}
+
+/* ============================ 1. PORTFOLIO QUIZ ============================ */
+const ARCHE = {
+  BR:{flag:"🇧🇷",team:"Brazil",name:"The Flair Player",blurb:"You back brilliance and you're comfortable when it's loud. High-conviction growth, a tolerance for the swings that come with it, and an instinct for the businesses everyone ends up talking about.",edge:"Spotting compounders early and holding through the noise.",watch:"Falling for the story. Brilliance still needs a price.",share:"I back brilliance and hold through the noise."},
+  DE:{flag:"🇩🇪",team:"Germany",name:"The System",blurb:"Process over impulse. You'd rather follow a repeatable framework than rely on a good week. Rules-based, disciplined, and quietly relentless — the rebalance happens whether you feel like it or not.",edge:"Removing emotion from the decision.",watch:"Over-engineering. Not every signal deserves a trade.",share:"I trust the process over the impulse."},
+  JP:{flag:"🇯🇵",team:"Japan",name:"The Long Game",blurb:"Patience is your edge — you'll wait years for quality to do its work. Low turnover, high standards, and a comfort with doing nothing that most of the market can't manage.",edge:"Letting compounding run undisturbed.",watch:"Patience curdling into inertia. Theses can break.",share:"I let compounding do the heavy lifting."},
+  HR:{flag:"🇭🇷",team:"Croatia",name:"The Value Hunter",blurb:"You back the underrated and you're happy to be early and alone. Contrarian by temperament, you find the mispriced and the overlooked — and you punch above your weight when you're right.",edge:"Buying what others have written off.",watch:"Value traps. Cheap can stay cheap a long time.",share:"I buy what others have written off."},
+  AR:{flag:"🇦🇷",team:"Argentina",name:"The Concentrated Bet",blurb:"You build around your best ideas and size them like you mean it. A focused book, real conviction, and a willingness to let the stars carry the team.",edge:"Position sizing that reflects genuine conviction.",watch:"Too few baskets. One injury changes everything.",share:"I size my best ideas like I mean it."},
+  ES:{flag:"🇪🇸",team:"Spain",name:"The Diversifier",blurb:"Control through possession. You keep the ball moving — broad diversification, steady process, and incremental gains that compound without ever betting the house.",edge:"Resilience. You rarely have a catastrophic year.",watch:"Closet indexing. Possession isn't the same as scoring.",share:"I win by rarely having a catastrophic year."}
+};
+const QUIZ = [
+  {q:"Your book is down 15% in a month. What's your move?",a:[
+    {t:"Add to my best ideas — this is the opportunity",s:["AR","BR"]},
+    {t:"Stick to the rebalancing schedule",s:["DE","ES"]},
+    {t:"Re-read the long-term thesis and do nothing",s:["JP"]},
+    {t:"Hunt for what's now mispriced",s:["HR"]}]},
+  {q:"Where does your edge actually come from?",a:[
+    {t:"Conviction in a handful of great businesses",s:["AR"]},
+    {t:"A repeatable, rules-based process",s:["DE"]},
+    {t:"Patience the rest of the market lacks",s:["JP"]},
+    {t:"Seeing value others have missed",s:["HR"]},
+    {t:"Backing brilliance while it's running",s:["BR"]},
+    {t:"Spreading risk and compounding steadily",s:["ES"]}]},
+  {q:"How many holdings feel right to you?",a:[
+    {t:"A concentrated handful — 5 to 10",s:["AR"]},
+    {t:"A focused 15 to 25",s:["BR"]},
+    {t:"A broadly diversified book",s:["ES"]},
+    {t:"Whatever the model dictates",s:["DE"]}]},
+  {q:"Your natural time horizon is…",a:[
+    {t:"Decades — let it compound",s:["JP"]},
+    {t:"Long, but I'll act on a clear mispricing",s:["HR"]},
+    {t:"I ride trends for as long as they run",s:["BR"]},
+    {t:"Defined entirely by my framework",s:["DE","ES"]}]},
+  {q:"If you're honest, your biggest risk is…",a:[
+    {t:"Falling in love with a narrative",s:["BR"]},
+    {t:"Over-trading a system that was fine",s:["DE"]},
+    {t:"Being so early I look wrong for years",s:["HR","JP"]},
+    {t:"Too much riding on too few names",s:["AR"]},
+    {t:"Quietly becoming the index",s:["ES"]}]}
+];
+let quizState;
+function renderQuiz(){
+  setBack(true); scrollTop();
+  quizState={i:0,scores:{BR:0,DE:0,JP:0,HR:0,AR:0,ES:0}};
+  quizStep();
+}
+function quizStep(){
+  const {i}=quizState, total=QUIZ.length;
+  if(i>=total){ return quizResult(); }
+  const q=QUIZ[i];
+  app.innerHTML=`
+    <div class="panel">
+      <div class="mod-head">
+        <div class="tag">Game 01 · Which nation is your portfolio?</div>
+        <h2>Question ${i+1}<span style="color:var(--ink-faint)"> / ${total}</span></h2>
+      </div>
+      <div class="progress"><i style="width:${(i/total)*100}%"></i></div>
+      <div class="qtext">${q.q}</div>
+      <div class="opts">${q.a.map((o,idx)=>`<button class="opt" data-i="${idx}"><span class="k">${String.fromCharCode(65+idx)}</span>${o.t}</button>`).join('')}</div>
+    </div>`;
+  app.querySelectorAll('.opt').forEach(b=>b.addEventListener('click',()=>{
+    const o=q.a[+b.dataset.i]; o.s.forEach(k=>quizState.scores[k]+= (o.s.length>1?0.6:1));
+    quizState.i++; quizStep();
+  }));
+}
+function quizResult(){
+  const s=quizState.scores;
+  const key=Object.keys(s).sort((a,b)=>s[b]-s[a])[0];
+  const r=ARCHE[key];
+  app.innerHTML=`
+    <div class="panel">
+      <div class="result">
+        <div class="tag" style="font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold)">Your portfolio plays like…</div>
+        <div class="flag">${r.flag}</div>
+        <div class="team">${r.team}</div>
+        <div class="arche">${r.name}</div>
+        <p class="blurb">${r.blurb}</p>
+        <div class="traits">
+          <div class="trait"><b>Your edge</b><span>${r.edge}</span></div>
+          <div class="trait"><b>Watch for</b><span>${r.watch}</span></div>
+        </div>
+      </div>
+      <div class="row" style="justify-content:center">
+        <button class="btn" id="share">Copy my result</button>
+        <button class="btn ghost" id="again">Take it again</button>
+        <button class="btn ghost" id="more">More games</button>
+      </div>
+    </div>`;
+  document.getElementById('share').onclick=()=>copyResult(`My portfolio plays like ${r.team} ${r.flag} — "${r.name}". ${r.share} What's yours?`);
+  document.getElementById('again').onclick=renderQuiz;
+  document.getElementById('more').onclick=renderHome;
+}
+
+/* ============================ 2. CONVICTION BRACKET ============================ */
+const FIELD=[ // illustrative 16-team field; tier 1 = strong favourite, 3 = outsider
+  {f:"🇦🇷",n:"Argentina",t:1},{f:"🇫🇷",n:"France",t:1},{f:"🇪🇸",n:"Spain",t:1},{f:"🇧🇷",n:"Brazil",t:1},
+  {f:"🇵🇹",n:"Portugal",t:2},{f:"🇳🇱",n:"Netherlands",t:2},{f:"🇩🇪",n:"Germany",t:2},{f:"🇧🇪",n:"Belgium",t:2},
+  {f:"🇭🇷",n:"Croatia",t:3},{f:"🇺🇸",n:"USA",t:3},{f:"🇲🇦",n:"Morocco",t:3},{f:"🇺🇾",n:"Uruguay",t:3},
+  {f:"🇲🇽",n:"Mexico",t:3},{f:"🇯🇵",n:"Japan",t:3},{f:"🇸🇳",n:"Senegal",t:3},{f:"🇨🇴",n:"Colombia",t:3}
+];
+// seeded R16 pairings (1v3 style spread)
+const R16=[[0,8],[4,12],[2,10],[6,14],[1,9],[5,13],[3,11],[7,15]];
+let brk;
+function renderBracket(){
+  setBack(true); scrollTop();
+  brk={picks:{r16:Array(8).fill(null),qf:Array(4).fill(null),sf:Array(2).fill(null),f:null}};
+  drawBracket();
+}
+function teamSlot(idx, round, slotIdx, picked, opts){
+  if(idx===null||idx===undefined) return `<div class="slot empty">—</div>`;
+  const tm=FIELD[idx];
+  const cls = picked? 'slot picked' : 'slot';
+  return `<div class="${cls}" data-round="${round}" data-slot="${slotIdx}" data-team="${idx}"><span class="fl">${tm.f}</span>${tm.n}</div>`;
+}
+function drawBracket(){
+  const p=brk.picks;
+  // build display arrays
+  const qfSeeds=[]; for(let i=0;i<4;i++){qfSeeds.push([p.r16[i*2],p.r16[i*2+1]]);}
+  const sfSeeds=[[p.qf[0],p.qf[1]],[p.qf[2],p.qf[3]]];
+  const fSeeds=[p.sf[0],p.sf[1]];
+  function col(title, items){return `<div class="round"><h4>${title}</h4>${items}</div>`;}
+  // R16 column: show pairings, each pick advances
+  let r16col='';
+  R16.forEach((pair,gi)=>{
+    pair.forEach(idx=>{
+      const picked = p.r16[gi]===idx;
+      r16col+=`<div class="slot ${picked?'picked':''}" data-round="r16" data-slot="${gi}" data-team="${idx}"><span class="fl">${FIELD[idx].f}</span>${FIELD[idx].n}</div>`;
+    });
+    r16col+=`<div style="height:6px"></div>`;
+  });
+  const qfcol=qfSeeds.map((pr,gi)=>pr.map((idx,si)=>{
+    const picked=p.qf[gi]===idx;
+    return teamSlot(idx,'qf',gi,picked);
+  }).join('')+`<div style="height:6px"></div>`).join('');
+  const sfcol=sfSeeds.map((pr,gi)=>pr.map((idx)=>{
+    const picked=p.sf[gi]===idx;
+    return teamSlot(idx,'sf',gi,picked);
+  }).join('')+`<div style="height:6px"></div>`).join('');
+  const fcol=fSeeds.map((idx)=>teamSlot(idx,'f',0,p.f===idx)).join('');
+  const champ = p.f!==null? `<div class="slot champ"><span class="fl">${FIELD[p.f].f}</span>${FIELD[p.f].n}</div>`:`<div class="slot empty">your champion</div>`;
+
+  app.innerHTML=`
+    <div class="panel">
+      <div class="mod-head">
+        <div class="tag">Game 02 · The Conviction Bracket</div>
+        <h2>Call the knockouts</h2>
+        <p class="sub">Tap a team to send it through. A curated 16-team field — pick winners all the way to your champion, then get your conviction reading.</p>
+      </div>
+      <div class="bracket">
+        ${col('Round of 16', r16col)}
+        ${col('Quarters', qfcol)}
+        ${col('Semis', sfcol)}
+        ${col('Final', fcol)}
+        ${col('Champion', champ)}
+      </div>
+      <div class="row">
+        <button class="btn ghost" id="reset">Reset</button>
+        <button class="btn ghost" id="more">More games</button>
+      </div>
+      <p class="hint">Scroll the bracket sideways on mobile →</p>
+    </div>`;
+  app.querySelectorAll('.slot[data-round]').forEach(s=>{
+    s.addEventListener('click',()=>pickTeam(s.dataset.round, +s.dataset.slot, +s.dataset.team));
+  });
+  document.getElementById('reset').onclick=renderBracket;
+  document.getElementById('more').onclick=renderHome;
+}
+function pickTeam(round, slot, team){
+  const p=brk.picks;
+  if(round==='r16'){ p.r16[slot]=team; p.qf=[null,null,null,null]; p.sf=[null,null]; p.f=null; }
+  if(round==='qf'){ p.qf[slot]=team; p.sf=[null,null]; p.f=null; }
+  if(round==='sf'){ p.sf[slot]=team; p.f=null; }
+  if(round==='f'){ p.f=team; }
+  // require previous round filled to advance? we just redraw; advancing rounds appear as picks made
+  drawBracket();
+  if(round==='f') setTimeout(bracketReading,250);
+}
+function bracketReading(){
+  const p=brk.picks;
+  if(p.f===null) return;
+  const finalists=[p.sf[0],p.sf[1]].filter(x=>x!==null).map(i=>FIELD[i]);
+  const champ=FIELD[p.f];
+  const tierAvg = finalists.length? finalists.reduce((a,b)=>a+b.t,0)/finalists.length : champ.t;
+  let head, body, shareLine;
+  if(champ.t===1 && tierAvg<1.6){
+    head="You back the favourites.";
+    shareLine="I back the favourites.";
+    body="Chalk all the way. In a portfolio that's the comfortable, crowded trade — it rarely embarrasses you, but it rarely beats the field either. The market's already priced this view. That's closet-index risk: you're paying for conviction you haven't really taken.";
+  } else if(champ.t>=3){
+    head="Contrarian conviction.";
+    shareLine="I'm backing an outsider.";
+    body="You've crowned an outsider. That's where real active return lives — but only if the thesis is sound. High variance, high potential edge, and zero room to be lazy about why you're right. Size it like you mean it, and know what would prove you wrong.";
+  } else {
+    head="Balanced conviction.";
+    shareLine="A favourite to lift it, with an upset or two on the way.";
+    body="A favourite to win, an upset or two along the way. In portfolio terms that's a core-and-satellite instinct: anchor in quality, take considered risk at the margins. The hardest part isn't the picks — it's holding them when the bracket busts.";
+  }
+  app.innerHTML=`
+    <div class="panel">
+      <div class="result">
+        <div class="tag" style="font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold)">Your champion</div>
+        <div class="flag">${champ.f}</div>
+        <div class="team">${champ.n}</div>
+        <div class="arche">${head}</div>
+        <p class="blurb">${body}</p>
+      </div>
+      <div class="row" style="justify-content:center">
+        <button class="btn" id="share">Copy my call</button>
+        <button class="btn ghost" id="edit">Back to bracket</button>
+        <button class="btn ghost" id="more">More games</button>
+      </div>
+    </div>`;
+  document.getElementById('share').onclick=()=>copyResult(`My pick to lift the trophy: ${champ.n} ${champ.f}. ${shareLine} Who's your pick?`);
+  document.getElementById('edit').onclick=drawBracket;
+  document.getElementById('more').onclick=renderHome;
+}
+
+/* ============================ 3. STOCK MARKET WORLD CUP ============================ */
+// Indicative only — rough share of global equities + character. Labelled clearly as illustrative.
+const MARKETS=[
+  {f:"🇺🇸",n:"United States",w:"~63%",char:"Mega-cap tech, deepest liquidity",note:"The US alone is around three-fifths of global equity value — which is exactly why a 'home market' rarely tells the whole story."},
+  {f:"🇯🇵",n:"Japan",w:"~5%",char:"Quality industrials, governance reform",note:"Decades of going nowhere, then a re-rating. A reminder that 'dead money' and 'cheap' can look identical until they don't."},
+  {f:"🇬🇧",n:"United Kingdom",w:"~3%",char:"Dividends, energy & financials tilt",note:"Income-heavy and unloved. A classic value market — the question is always whether cheap is opportunity or warning."},
+  {f:"🇨🇭",n:"Switzerland",w:"~2%",char:"Defensive quality, low volatility",note:"Pharma and staples. The market that tends to lose least when the whole pitch turns to mud."},
+  {f:"🇮🇳",n:"India",w:"~2%",char:"High growth, high valuation",note:"Structural growth story trading at a premium. You're paying up front for a long runway — discipline on price still matters."},
+  {f:"🇨🇳",n:"China",w:"~3%",char:"Policy-driven, deep value",note:"Cheap for reasons that are easy to list and hard to price. The ultimate test of whether you separate the business from the politics."},
+  {f:"🇦🇺",n:"Australia",w:"~2%",char:"Banks, miners, franked dividends",note:"Concentrated in two sectors. High income, but a long way from diversified on its own."},
+  {f:"🇳🇿",n:"New Zealand",w:"<0.1%",char:"Small, defensive, home turf",note:"A rounding error in global terms — and the single best argument for why a Kiwi investor has to look offshore."}
+];
+// quarter-final pairings index into MARKETS
+const MQF=[[0,7],[1,6],[2,5],[3,4]];
+let mkt;
+function renderMarket(){
+  setBack(true); scrollTop();
+  mkt={stage:'qf',round:[...MQF],idx:0,winners:[],lastNote:null};
+  marketStep();
+}
+function marketStep(){
+  // determine current matchups
+  let pairs, title, total;
+  if(mkt.stage==='qf'){pairs=MQF;title='Quarter-finals';}
+  else if(mkt.stage==='sf'){pairs=mkt.sfPairs;title='Semi-finals';}
+  else {pairs=mkt.fPairs;title='The Final';}
+  total=pairs.length;
+  if(mkt.idx>=total){
+    // advance stage
+    if(mkt.stage==='qf'){ mkt.sfPairs=[[mkt.winners[0],mkt.winners[1]],[mkt.winners[2],mkt.winners[3]]]; mkt.stage='sf'; mkt.idx=0; mkt.winners=[]; return marketStep(); }
+    if(mkt.stage==='sf'){ mkt.fPairs=[[mkt.winners[0],mkt.winners[1]]]; mkt.stage='f'; mkt.idx=0; mkt.winners=[]; return marketStep(); }
+    if(mkt.stage==='f'){ return marketResult(mkt.winners[0]); }
+  }
+  const [aI,bI]=pairs[mkt.idx];
+  const a=MARKETS[aI], b=MARKETS[bI];
+  const overall = mkt.stage==='qf'?(mkt.idx+1)+' / 4':mkt.stage==='sf'?(mkt.idx+1)+' / 2':'1 / 1';
+  app.innerHTML=`
+    <div class="panel">
+      <div class="mod-head">
+        <div class="tag">Game 03 · The Stock Market World Cup</div>
+        <h2>${title}</h2>
+        <p class="sub">Two national equity markets. One question: which would you rather own? Tap to send it through. <span style="color:var(--ink-faint)">Match ${overall}</span></p>
+      </div>
+      <div class="matchcard">
+        <button class="mkt" data-w="${aI}">
+          <div class="fl">${a.f}</div><div class="name">${a.n}</div>
+          <div class="char">${a.char}</div>
+          <div class="stat">Share of global equities <b>${a.w}</b></div>
+        </button>
+        <div class="vs">vs</div>
+        <button class="mkt" data-w="${bI}">
+          <div class="fl">${b.f}</div><div class="name">${b.n}</div>
+          <div class="char">${b.char}</div>
+          <div class="stat">Share of global equities <b>${b.w}</b></div>
+        </button>
+      </div>
+      ${mkt.lastNote?`<div class="note">${mkt.lastNote}</div>`:''}
+      <div class="row"><button class="btn ghost" id="more">More games</button></div>
+    </div>`;
+  app.querySelectorAll('.mkt').forEach(btn=>btn.addEventListener('click',()=>{
+    const w=+btn.dataset.w; mkt.winners.push(w); mkt.lastNote=MARKETS[w].note; mkt.idx++; marketStep(); scrollTop();
+  }));
+  document.getElementById('more').onclick=renderHome;
+}
+function marketResult(wIdx){
+  const w=MARKETS[wIdx];
+  const home = wIdx===7;
+  const us = wIdx===0;
+  let verdict;
+  if(home) verdict="You crowned the home market — but in global terms New Zealand is well under 0.1% of listed equities. The single biggest decision a Kiwi investor makes isn't which NZX name to buy; it's how much to hold offshore at all.";
+  else if(us) verdict="You backed the giant. Reasonable — it's most of the index. But owning 'the market' already means owning a lot of it. The interesting question is whether the next decade rewards the crowd as well as the last one did.";
+  else verdict="You looked past the obvious. That's the whole case for owning the world rather than just the biggest name in it — the champion isn't always the one with the most market cap. Diversification is admitting you don't know which flag wins.";
+  app.innerHTML=`
+    <div class="panel">
+      <div class="result">
+        <div class="tag" style="font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold)">Your global equity champion</div>
+        <div class="flag">${w.f}</div>
+        <div class="team">${w.n}</div>
+      </div>
+      <p class="verdict">${verdict}</p>
+      <p class="verdict" style="color:var(--ink-faint);font-size:13px">Figures are indicative and for illustration only — not live, not exact, and not advice.</p>
+      <div class="row" style="justify-content:center">
+        <button class="btn" id="share">Copy my pick</button>
+        <button class="btn ghost" id="again">Play again</button>
+        <button class="btn ghost" id="more">More games</button>
+      </div>
+    </div>`;
+  document.getElementById('share').onclick=()=>copyResult(`My Stock Market World Cup champion: ${w.n} ${w.f}. I'd own it for the next decade. Which market gets your vote?`);
+  document.getElementById('again').onclick=renderMarket;
+  document.getElementById('more').onclick=renderHome;
+}
+
+/* ============================ 4. TRIVIA ============================ */
+const TRIVIA=[
+  {q:"How many teams contest the 2026 World Cup — the first under the expanded format?",a:["32","40","48","64"],c:2,
+   e:"48 teams, up from 32 — twelve groups of four and a brand-new Round of 32."},
+  {q:"Which three countries are co-hosting the 2026 tournament?",a:["USA, Mexico & Canada","USA, Brazil & Mexico","Canada, Mexico & Argentina","USA, Canada & Costa Rica"],c:0,
+   e:"The first three-nation host: the United States, Mexico and Canada."},
+  {q:"Which nation has won the most men's World Cup titles?",a:["Germany","Italy","Argentina","Brazil"],c:3,
+   e:"Brazil, with five — the only side to have won it on four different continents."},
+  {q:"Who lifted the very first World Cup, back in 1930?",a:["Brazil","Uruguay","Italy","England"],c:1,
+   e:"Uruguay, on home soil. They beat Argentina 4–2 in the final."},
+  {q:"The MSCI ACWI index tracks stocks across developed and emerging markets. What does ACWI stand for?",a:["Asia-Centric World Index","All Country World Index","Aggregate Capital Weighted Index","Active Core World Index"],c:1,
+   e:"All Country World Index — the closest thing to owning 'the whole pitch' of global equities."},
+  {q:"In investing, what's the name for earning a return on your previous returns?",a:["Leverage","Arbitrage","Compounding","Hedging"],c:2,
+   e:"Compounding — the quiet force that does most of the scoring over a long enough match."},
+  {q:"'Don't put all your eggs in one basket' is the folk wisdom for which principle?",a:["Market timing","Diversification","Momentum","Dollar-cost averaging"],c:1,
+   e:"Diversification — spreading risk so one bad result doesn't end your tournament."},
+  {q:"Where will the 2026 World Cup final be played?",a:["Los Angeles","Mexico City","MetLife Stadium, New Jersey","Toronto"],c:2,
+   e:"MetLife Stadium, just outside New York, on 19 July 2026."}
+];
+let triv;
+function renderTrivia(){
+  setBack(true); scrollTop();
+  triv={i:0,score:0,answered:false};
+  trivStep();
+}
+function trivStep(){
+  const {i}=triv,total=TRIVIA.length;
+  if(i>=total) return trivResult();
+  const q=TRIVIA[i];
+  app.innerHTML=`
+    <div class="panel">
+      <div class="mod-head">
+        <div class="tag">Game 04 · Markets × World Cup trivia</div>
+        <h2>Question ${i+1}<span style="color:var(--ink-faint)"> / ${total}</span> · Score ${triv.score}</h2>
+      </div>
+      <div class="progress"><i style="width:${(i/total)*100}%"></i></div>
+      <div class="qtext">${q.q}</div>
+      <div class="opts" id="opts">${q.a.map((o,idx)=>`<button class="opt" data-i="${idx}"><span class="k">${String.fromCharCode(65+idx)}</span>${o}</button>`).join('')}</div>
+      <div id="feedback"></div>
+    </div>`;
+  app.querySelectorAll('.opt').forEach(b=>b.addEventListener('click',()=>trivAnswer(+b.dataset.i)));
+}
+function trivAnswer(choice){
+  if(triv.answered) return; triv.answered=true;
+  const q=TRIVIA[triv.i];
+  const opts=app.querySelectorAll('.opt');
+  opts.forEach((b,idx)=>{
+    b.disabled=true;
+    if(idx===q.c) b.classList.add('correct');
+    else if(idx===choice) b.classList.add('wrong');
+  });
+  if(choice===q.c) triv.score++;
+  const correct=choice===q.c;
+  document.getElementById('feedback').innerHTML=`
+    <div class="note" style="border-color:${correct?'var(--pitch-bright)':'var(--clay)'}">
+      <b style="color:${correct?'var(--pitch-bright)':'var(--clay)'}">${correct?'Back of the net.':'Off target.'}</b> ${q.e}
+    </div>
+    <div class="row"><button class="btn" id="next">${triv.i+1>=TRIVIA.length?'See my score':'Next question'}</button></div>`;
+  document.getElementById('next').onclick=()=>{ triv.i++; triv.answered=false; trivStep(); scrollTop(); };
+}
+function trivResult(){
+  const s=triv.score,total=TRIVIA.length;
+  let title,line;
+  if(s===total){title="Golden Boot.";line="A clean sweep. You read the pitch and the portfolio equally well.";}
+  else if(s>=6){title="Through to the knockouts.";line="Strong showing — a couple of near misses, but you'd top most groups.";}
+  else if(s>=4){title="Squeaked through on goal difference.";line="Respectable. Worth a rematch before the final whistle.";}
+  else {title="Group-stage exit.";line="Early flight home — but the tournament's long, and so is the learning curve.";}
+  app.innerHTML=`
+    <div class="panel">
+      <div class="mod-head" style="text-align:center"><div class="tag">Game 04 · Final whistle</div></div>
+      <div class="scoreline"><b>${s}</b> / ${total}</div>
+      <div class="result"><div class="team" style="font-size:clamp(24px,5vw,34px)">${title}</div></div>
+      <p class="verdict">${line}</p>
+      <div class="row" style="justify-content:center">
+        <button class="btn" id="share">Copy my score</button>
+        <button class="btn ghost" id="again">Play again</button>
+        <button class="btn ghost" id="more">More games</button>
+      </div>
+    </div>`;
+  document.getElementById('share').onclick=()=>copyResult(`I scored ${s}/${total} on the Markets × World Cup trivia — ${title} Can you beat it?`);
+  document.getElementById('again').onclick=renderTrivia;
+  document.getElementById('more').onclick=renderHome;
+}
+
+/* ---- routing & boot ---- */
+function route(){
+  const h=(location.hash||'').replace('#','');
+  if(h==='temperament') renderQuiz();
+  else if(h==='conviction') renderBracket();
+  else if(h==='marketcup') renderMarket();
+  else if(h==='trivia') renderTrivia();
+  else renderHome();
+}
+window.addEventListener('hashchange', route);
+route();
+</script>
+</body>
+</html>
